@@ -26,10 +26,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rickandmorty.R
 import com.example.rickandmorty.databinding.NetworkStateItemBinding
 
-/**
- * A View Holder that can display a loading or have click action.
- * It is used to show the network state of paging.
- */
 class NetworkStateItemViewHolder(
     parent: ViewGroup,
     private val retryCallback: () -> Unit
@@ -37,15 +33,17 @@ class NetworkStateItemViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.network_state_item, parent, false)
 ) {
     private val binding = NetworkStateItemBinding.bind(itemView)
-    private val progressBar = binding.progressBar
-    private val errorMsg = binding.errorMsg
-    private val retry = binding.retryButton
+    private val progressBar = binding.pbWaiting
+    private val tvLoadingItems = binding.tvLoadingItems
+    private val errorMsg = binding.tvErrorMsg
+    private val retry = binding.btnRetry
         .also {
             it.setOnClickListener { retryCallback() }
         }
 
     fun bindTo(loadState: LoadState) {
         progressBar.isVisible = loadState is Loading
+        tvLoadingItems.isVisible = loadState is Loading
         retry.isVisible = loadState is Error
         errorMsg.isVisible = !(loadState as? Error)?.error?.message.isNullOrBlank()
         errorMsg.text = (loadState as? Error)?.error?.message

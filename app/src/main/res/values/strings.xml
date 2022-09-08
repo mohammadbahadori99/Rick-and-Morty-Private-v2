@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Rick and Morty</string>
     <string name="label_retry">Retry</string>
+    <string name="label_loading_items">Loading items…</string>
 </resources>
