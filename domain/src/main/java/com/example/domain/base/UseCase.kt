@@ -1,7 +1,6 @@
-package com.example.domain.usecase
+package com.example.domain.base
 
 abstract class UseCase<in P, R> {
-
     operator fun invoke(parameters: P): R {
         return execute(parameters)
     }

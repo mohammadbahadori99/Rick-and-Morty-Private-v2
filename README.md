@@ -27,12 +27,18 @@ available, use the offline data.
 
 A lightweight domain layer sits between the data layer and the presentation layer and handles
 discrete pieces of business logic off the UI thread.
+
+### Paging lifecycle :
+<p align="center">
+ <img src='https://developer.android.com/static/topic/libraries/architecture/images/paging3-layered-architecture.svg' width='500'>
+</p>
+
+
 ### Technologies which i used in this project:
 * Retrofit
 * OkHttp3
 * Glide
 * Room
-* Navigation Component
 * Kotlin Coroutines
 * Kotlin Flow
 * ViewModel

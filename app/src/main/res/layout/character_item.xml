@@ -8,7 +8,9 @@
     <ImageView
         android:id="@+id/iv_characterImage"
         android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_2x"
         android:src="@color/black"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/gl_center"

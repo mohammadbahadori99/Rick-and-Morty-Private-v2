@@ -9,6 +9,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.rickandmorty.databinding.ActivityCharactersBinding
 import com.example.rickandmorty.model.CharacterView
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_characters.*
 import kotlinx.coroutines.flow.collectLatest
@@ -35,14 +36,13 @@ class CharactersActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         charactersListAdapter = CharactersListAdapter { adapterOnClick(it) }
-        rv_characters_activityCharacter.adapter = charactersListAdapter
         rv_characters_activityCharacter.adapter = charactersListAdapter.withLoadStateFooter(
             footer = CharacterLoadStateAdapter(charactersListAdapter)
         )
+        rv_characters_activityCharacter.setHasFixedSize(true)
         lifecycleScope.launchWhenCreated {
             charactersListAdapter.loadStateFlow.collect { loadStates ->
-                srlFragmentHome.isRefreshing =
-                    loadStates.mediator?.refresh is LoadState.Loading
+                srlFragmentHome.isRefreshing = loadStates.mediator?.refresh is LoadState.Loading
             }
         }
         lifecycleScope.launchWhenResumed {
@@ -50,7 +50,6 @@ class CharactersActivity : AppCompatActivity() {
                 charactersListAdapter.submitData(it)
             }
         }
-
         rv_characters_activityCharacter.addItemDecoration(
             DividerItemDecoration(
                 this,
@@ -60,5 +59,6 @@ class CharactersActivity : AppCompatActivity() {
     }
 
     private fun adapterOnClick(characterView: CharacterView) {
+        Snackbar.make(binding.root,"${characterView.name} Clicked",Snackbar.LENGTH_SHORT).show()
     }
 }

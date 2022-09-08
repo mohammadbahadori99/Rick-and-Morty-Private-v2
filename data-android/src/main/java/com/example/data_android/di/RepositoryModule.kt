@@ -1,6 +1,6 @@
 package com.example.data_android.di
 
-import com.example.data_android.CharactersRepositoryImpl
+import com.example.data_android.repository.CharactersRepositoryImpl
 import com.example.domain.repository.CharactersRepository
 import dagger.Binds
 import dagger.Module
@@ -15,4 +15,5 @@ interface RepositoryModule {
     @Binds
     @Singleton
     fun bindCharactersRepository(charactersRepositoryImpl: CharactersRepositoryImpl): CharactersRepository
+
 }

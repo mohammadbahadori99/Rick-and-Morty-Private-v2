@@ -7,12 +7,16 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.rickandmorty.R
 import com.example.rickandmorty.model.CharacterView
 import kotlinx.android.synthetic.main.character_item.view.*
 
 class CharactersListAdapter(private val onClick: (CharacterView) -> Unit) :
-    PagingDataAdapter<CharacterView, CharactersListAdapter.CharacterViewHolder>(CharacterDiffCallback) {
+    PagingDataAdapter<CharacterView, CharactersListAdapter.CharacterViewHolder>(
+        CharacterDiffCallback
+    ) {
     class CharacterViewHolder(itemView: View, val onClick: (CharacterView) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
         private var characterView: CharacterView? = null
@@ -31,8 +35,8 @@ class CharactersListAdapter(private val onClick: (CharacterView) -> Unit) :
             itemView.tv_status.text = data.status
             itemView.tv_gender.text = data.gender
             itemView.tv_locationName.text = data.locationName
-            Glide.with(itemView.context).load(data.image)
-                .placeholder(R.drawable.place_holder).fitCenter().into(itemView.iv_characterImage)
+            Glide.with(itemView.context).load(data.image).placeholder(R.drawable.place_holder).apply(
+                RequestOptions.bitmapTransform(RoundedCorners(36))).into(itemView.iv_characterImage)
         }
     }
 
@@ -44,7 +48,7 @@ class CharactersListAdapter(private val onClick: (CharacterView) -> Unit) :
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val character = getItem(position)
-        character?.let{
+        character?.let {
             holder.bind(it)
         }
     }
@@ -53,7 +57,7 @@ class CharactersListAdapter(private val onClick: (CharacterView) -> Unit) :
 
 object CharacterDiffCallback : DiffUtil.ItemCallback<CharacterView>() {
     override fun areItemsTheSame(oldItem: CharacterView, newItem: CharacterView): Boolean {
-        return oldItem == newItem
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: CharacterView, newItem: CharacterView): Boolean {

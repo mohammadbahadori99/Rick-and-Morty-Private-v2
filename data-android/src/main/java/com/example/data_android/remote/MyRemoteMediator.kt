@@ -7,8 +7,8 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.example.data_android.CharactersDataBase
 import com.example.data_android.local.CharacterDao
+import com.example.data_android.model.Constant.PAGE_SIZE
 import com.example.data_android.model.MyResponseEntity
-import com.example.data_android.model.toMyResponseDTO
 import com.example.data_android.model.toMyResponseEntity
 import retrofit2.HttpException
 import java.io.IOException
@@ -18,10 +18,11 @@ import javax.inject.Inject
 class MyRemoteMediator @Inject constructor(
     private val database: CharactersDataBase,
     private val characterDao: CharacterDao,
-    private val networkService: WebService
-) : RemoteMediator<Int, MyResponseEntity>() {
+    private val networkService: WebService,
+
+    ) : RemoteMediator<Int, MyResponseEntity>() {
     override suspend fun initialize(): InitializeAction {
-        return InitializeAction.LAUNCH_INITIAL_REFRESH
+        return InitializeAction.SKIP_INITIAL_REFRESH
     }
 
     override suspend fun load(
@@ -37,10 +38,7 @@ class MyRemoteMediator @Inject constructor(
                     return MediatorResult.Success(endOfPaginationReached = true)
                 }
                 LoadType.APPEND -> {
-                    val remoteKey = ((characterDao.getRecordsCount().size) / 20) + 1
-                    if ((characterDao.getRecordsCount().size) % 20 != 0) {
-                        return MediatorResult.Success(endOfPaginationReached = true)
-                    }
+                    val remoteKey = ((characterDao.getRecordsCount().size) / PAGE_SIZE) + 1
                     remoteKey
                 }
             }
@@ -54,12 +52,12 @@ class MyRemoteMediator @Inject constructor(
                 data.let { list ->
                     characterDao.insertAllCharacters(
                         list.results.map {
-                            it.toMyResponseDTO().toMyResponseEntity()
+                            it.toMyResponseEntity()
                         }
                     )
                 }
             }
-            return MediatorResult.Success(endOfPaginationReached = data.results.size < 20)
+            return MediatorResult.Success(endOfPaginationReached = data.info.next == "")
         } catch (e: IOException) {
             return MediatorResult.Error(e)
         } catch (e: HttpException) {

@@ -15,13 +15,8 @@ interface CharacterDao {
     @Query("SELECT * FROM characters")
     fun getAllCharacters(): PagingSource<Int, MyResponseEntity>
 
-    @RawQuery(observedEntities = [MyResponseEntity::class])
-    fun getAllCharacters(query: SupportSQLiteQuery): PagingSource<Int, MyResponseEntity>
-
     @Query("DELETE FROM characters")
     suspend fun clearAll()
-
-
 
     @Query("SELECT id FROM characters")
     suspend fun getRecordsCount(): List<Int>

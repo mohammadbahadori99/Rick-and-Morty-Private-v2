@@ -19,18 +19,27 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(
+        client: OkHttpClient
     ): Retrofit {
-        val logging = HttpLoggingInterceptor()
-        logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
-        val client: OkHttpClient = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
+
         return Retrofit.Builder()
             .baseUrl("https://rickandmortyapi.com")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
     }
+
+
+    @Provides
+    @Singleton
+    fun provideOkHttp(): OkHttpClient {
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
+        return OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build()
+    }
+
 
     @Provides
     @Singleton

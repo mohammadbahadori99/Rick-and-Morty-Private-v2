@@ -1,10 +1,9 @@
-package com.example.data_android
+package com.example.data_android.repository
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.map
-import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.data_android.local.CharacterDao
 import com.example.data_android.model.toCharacterDomainModel
 import com.example.data_android.remote.MyRemoteMediator
@@ -21,8 +20,6 @@ class CharactersRepositoryImpl @Inject constructor(
         config = PagingConfig(pageSize),
         remoteMediator = myRemoteMediator
     ) {
-        val myQuery =
-            SimpleSQLiteQuery("SELECT * FROM characters  ORDER BY time asc ")
         dao.getAllCharacters()
     }.flow.mapLatest { pagingData ->
         pagingData.map { entity ->

@@ -3,7 +3,7 @@ package com.example.data_android.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ServerResponseModel(
+data class MyResponseDTO(
     val info: Info,
     val results: List<Result>
 )
