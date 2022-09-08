@@ -1,7 +1,6 @@
 package com.example.domain.repository
 
 import androidx.paging.PagingData
-import com.example.base.MyResponse
 import com.example.domain.model.CharacterDomainModel
 import kotlinx.coroutines.flow.Flow
 
